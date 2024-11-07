@@ -1,0 +1,5 @@
+﻿  generate_private_key.cpp
+D:\CS15005-NhapMonMaHoa-Lab1\generate_private_key\generate_private_key.cpp(16,13): warning C4566: character represented by universal-character-name '\u0111' cannot be represented in the current code page (936)
+D:\CS15005-NhapMonMaHoa-Lab1\generate_private_key\generate_private_key.cpp(16,13): warning C4566: character represented by universal-character-name '\u01B0' cannot be represented in the current code page (936)
+D:\CS15005-NhapMonMaHoa-Lab1\generate_private_key\generate_private_key.cpp(16,13): warning C4566: character represented by universal-character-name '\u1EE3' cannot be represented in the current code page (936)
+  generate_private_key.vcxproj -> D:\CS15005-NhapMonMaHoa-Lab1\generate_private_key\x64\Debug\generate_private_key.exe
