@@ -1,5 +1,17 @@
-﻿  generate_private_key.cpp
-D:\CS15005-NhapMonMaHoa-Lab1\generate_private_key\generate_private_key.cpp(16,13): warning C4566: character represented by universal-character-name '\u0111' cannot be represented in the current code page (936)
-D:\CS15005-NhapMonMaHoa-Lab1\generate_private_key\generate_private_key.cpp(16,13): warning C4566: character represented by universal-character-name '\u01B0' cannot be represented in the current code page (936)
-D:\CS15005-NhapMonMaHoa-Lab1\generate_private_key\generate_private_key.cpp(16,13): warning C4566: character represented by universal-character-name '\u1EE3' cannot be represented in the current code page (936)
-  generate_private_key.vcxproj -> D:\CS15005-NhapMonMaHoa-Lab1\generate_private_key\x64\Debug\generate_private_key.exe
+﻿  BigInt.cpp
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(6,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(23,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(43,25): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(89,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(111,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(193,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(193,32): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(326,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(362,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\BigInt.cpp(372,16): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  generate_private_key.cpp
+  main.cpp
+  Generating Code...
+main.obj : error LNK2005: "__int64 __cdecl generate_private_key(__int64)" (?generate_private_key@@YA_J_J@Z) already defined in generate_private_key.obj
+main.obj : error LNK2005: main already defined in generate_private_key.obj
+D:\Coding\CS1505-MHMM\Prj-1\generate_private_key\x64\Debug\generate_private_key.exe : fatal error LNK1169: one or more multiply defined symbols found
