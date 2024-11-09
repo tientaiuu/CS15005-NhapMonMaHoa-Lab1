@@ -1,9 +1,27 @@
-#include "BigInt.h"
-
-#include <iostream>
+﻿#include "BigInt.h"
 #include <random>
 
-using namespace std;
+
+// A: Triển khai hàm luỹ thừa module
+// Hàm cần thực hiện: (base^exponent) % mod
+BigInt modular_exponentiation(BigInt base, BigInt exponent, const BigInt& mod) 
+{
+    BigInt result = 1;  
+    base = base % mod;  
+
+    BigInt temp("0");
+
+    while (exponent > temp)     // exponent > 0
+    {
+        if (exponent % 2 == 1) {
+            result = (result * base) % mod;
+        }
+        base = (base * base) % mod;
+
+        divide_by_2(exponent);  
+    }
+    return result;
+}
 
 long long generate_private_key(long long p) 
 {
@@ -13,9 +31,8 @@ long long generate_private_key(long long p)
     return dis(gen);
 }
 
-int main() {
-    long long p = 32416190071;
-    long long private_key = generate_private_key(p);
-    cout << "Khoa rieng duoc sinh: " << private_key << "\n";
+int main() 
+{
+ 
     return 0;
 }

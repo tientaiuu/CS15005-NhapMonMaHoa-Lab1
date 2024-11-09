@@ -1,5 +1,11 @@
-#include "BigInt.h"
+﻿#include "BigInt.h"
 
+
+//------------------------------------------------------------------------------------------------------//
+//                                   Khởi tạo Constructors cho BigINT                                   //
+//------------------------------------------------------------------------------------------------------//
+
+// Khởi tạo BigInt từ một chuỗi ký tự (string)
 BigInt::BigInt(string& s)
 {
     digits = "";
@@ -10,6 +16,7 @@ BigInt::BigInt(string& s)
         digits.push_back(s[i] - '0');
     }
 }
+// Khởi tạo BigInt từ một số nguyên không dấu (unsigned long long)
 BigInt::BigInt(unsigned long long nr)
 {
     do {
@@ -17,6 +24,7 @@ BigInt::BigInt(unsigned long long nr)
         nr /= 10;
     } while (nr);
 }
+// Khởi tạo BigInt từ một chuỗi ký tự (const char*)
 BigInt::BigInt(const char* s)
 {
     digits = "";
@@ -27,27 +35,44 @@ BigInt::BigInt(const char* s)
         digits.push_back(s[i] - '0');
     }
 }
+// Copy constructor
 BigInt::BigInt(BigInt& a)
 {
     digits = a.digits;
 }
 
+//------------------------------------------------------------------------------------------------------//
+//                                   Cài đặt hàm phụ trợ                                                //
+//------------------------------------------------------------------------------------------------------//
+
+// Kiểm tra BigInt = 0 
 bool Null(const BigInt& a)
 {
     if (a.digits.size() == 1 && a.digits[0] == 0)
         return true;
     return false;
 }
-int Length(const BigInt& a)
+
+// Trả về số lượng chữ số của BigInt
+int Size(const BigInt& a)
 {
     return a.digits.size();
 }
+
+// Cho phép truy cập một chữ số trong BigInt như a[index].
 int BigInt::operator[](const int index)const
 {
     if (digits.size() <= index || index < 0)
         throw("ERROR");
     return digits[index];
 }
+
+
+//------------------------------------------------------------------------------------------------------//
+//                                   Cài đặt hàm so sánh số nguyên lớn                                  //
+//------------------------------------------------------------------------------------------------------//
+
+//------------------- So sánh = -------------------------//
 bool operator==(const BigInt& a, const BigInt& b)
 {
     return a.digits == b.digits;
@@ -56,9 +81,11 @@ bool operator!=(const BigInt& a, const BigInt& b)
 {
     return !(a == b);
 }
+
+//------------------- So sánh lớn/bé -------------------------//
 bool operator<(const BigInt& a, const BigInt& b)
 {
-    int n = Length(a), m = Length(b);
+    int n = Size(a), m = Size(b);
     if (n != m)
         return n < m;
     while (n--)
@@ -79,13 +106,22 @@ bool operator<=(const BigInt& a, const BigInt& b)
     return !(a > b);
 }
 
+//---------------------- Phép gán ------------------------//
 BigInt& BigInt::operator=(const BigInt& a)
 {
     digits = a.digits;
     return *this;
 }
 
-BigInt& BigInt::operator++() {
+
+//------------------------------------------------------------------------------------------------------//
+//                                     Cài đặt hàm +/- cho BigINT                                       //
+//------------------------------------------------------------------------------------------------------//
+
+//----------------------- Tăng thêm 1 -----------------------//
+// 
+BigInt& BigInt::operator++() 
+{
     int i, n = digits.size();
     for (i = 0; i < n && digits[i] == 9; i++)
         digits[i] = 0;
@@ -104,6 +140,7 @@ BigInt BigInt::operator++(int temp)
     return aux;
 }
 
+//----------------------- Giảm đi 1 -----------------------//
 BigInt& BigInt::operator--()
 {
     if (digits[0] == 0 && digits.size() == 1)
@@ -124,13 +161,14 @@ BigInt BigInt::operator--(int temp)
     return aux;
 }
 
+//----------------------------------- Cộng 2 số nguyên lớn ------------------------------- //
 BigInt& operator+=(BigInt& a, const BigInt& b)
 {
     int t = 0, s, i;
-    int n = Length(a), m = Length(b);
+    int n = Size(a), m = Size(b);
     if (m > n)
         a.digits.append(m - n, 0);
-    n = Length(a);
+    n = Size(a);
     for (i = 0; i < n; i++) {
         if (i < m)
             s = (a.digits[i] + b.digits[i]) + t;
@@ -151,11 +189,13 @@ BigInt operator+(const BigInt& a, const BigInt& b)
     return temp;
 }
 
+//----------------------------------- Trừ 2 số nguyên lớn ------------------------------- //
+
 BigInt& operator-=(BigInt& a, const BigInt& b)
 {
     if (a < b)
         throw("UNDERFLOW");
-    int n = Length(a), m = Length(b);
+    int n = Size(a), m = Size(b);
     int i, t = 0, s;
     for (i = 0; i < n; i++)
     {
@@ -184,6 +224,12 @@ BigInt operator-(const BigInt& a, const BigInt& b)
     return temp;
 }
 
+
+//------------------------------------------------------------------------------------------------------//
+//                                   Cài đặt Nhân/Chia cho BigInt                                       //
+//------------------------------------------------------------------------------------------------------//
+
+//--------------------------------------- Nhân 2 số nguyên lớn ----------------------------------//
 BigInt& operator*=(BigInt& a, const BigInt& b)
 {
     if (Null(a) || Null(b)) {
@@ -217,6 +263,8 @@ BigInt operator*(const BigInt& a, const BigInt& b)
     return temp;
 }
 
+//--------------------------------------- Chia 2 số nguyên lớn ----------------------------------//
+
 BigInt& operator/=(BigInt& a, const BigInt& b)
 {
     if (Null(b))
@@ -230,7 +278,7 @@ BigInt& operator/=(BigInt& a, const BigInt& b)
         return a;
     }
     int i, lgcat = 0, cc;
-    int n = Length(a), m = Length(b);
+    int n = Size(a), m = Size(b);
     vector<int> cat(n, 0);
     BigInt t;
     for (i = n - 1; t * 10 + a.digits[i] < b; i--)
@@ -259,6 +307,10 @@ BigInt operator/(const BigInt& a, const BigInt& b)
     return temp;
 }
 
+
+//------------------------------------------------------------------------------------------------------//
+//                                        Hàm modulo cho BigINT                                         //
+//------------------------------------------------------------------------------------------------------//
 BigInt& operator%=(BigInt& a, const BigInt& b)
 {
     if (Null(b))
@@ -273,7 +325,7 @@ BigInt& operator%=(BigInt& a, const BigInt& b)
         return a;
     }
     int i, lgcat = 0, cc;
-    int n = Length(a), m = Length(b);
+    int n = Size(a), m = Size(b);
     vector<int> cat(n, 0);
     BigInt t;
     for (i = n - 1; t * 10 + a.digits[i] < b; i--)
@@ -299,6 +351,10 @@ BigInt operator%(const BigInt& a, const BigInt& b)
     return temp;
 }
 
+
+//------------------------------------------------------------------------------------------------------//
+//                                       Cài đặt hàm mũ cho BigInt                                      //
+//------------------------------------------------------------------------------------------------------//
 BigInt& operator^=(BigInt& a, const BigInt& b)
 {
     BigInt Exponent, Base(a);
@@ -320,6 +376,12 @@ BigInt operator^(BigInt& a, BigInt& b)
     return temp;
 }
 
+
+//------------------------------------------------------------------------------------------------------//
+//                                       Cài đặt hàm Sqrt cho BigINT                                    //
+//------------------------------------------------------------------------------------------------------//
+
+// Hàm chia đôi 
 void divide_by_2(BigInt& a)
 {
     int add = 0;
@@ -333,6 +395,7 @@ void divide_by_2(BigInt& a)
         a.digits.pop_back();
 }
 
+// Hàm căn bậc 2 cho BigInt
 BigInt sqrt(BigInt& a)
 {
     BigInt left(1), right(a), v(1), mid, prod;
@@ -356,18 +419,26 @@ BigInt sqrt(BigInt& a)
     return v;
 }
 
-istream& operator>>(istream& in, BigInt& a) {
+
+//------------------------------------------------------------------------------------------------------//
+//                                   Cài đặt toán tử đọc/xuất BigInt                                    //
+//------------------------------------------------------------------------------------------------------//
+
+// Biến chuỗi thành BigInt
+istream& operator>>(istream& in, BigInt& a) 
+{
     string s;
     in >> s;
     int n = s.size();
     for (int i = n - 1; i >= 0; i--) {
         if (!isdigit(s[i]))
             throw("INVALID NUMBER");
-        a.digits[n - i - 1] = s[i];
+        a.digits[n - i - 1] = s[i] - '0';
     }
     return in;
 }
 
+// Xuất ra BigInt 
 ostream& operator<<(ostream& out, const BigInt& a) {
     for (int i = a.digits.size() - 1; i >= 0; i--)
         cout << (short)a.digits[i];

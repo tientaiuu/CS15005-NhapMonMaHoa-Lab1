@@ -1,9 +1,14 @@
-#ifndef BIG_INT
+﻿#ifndef BIG_INT
 #define BIG_INT
 
 #include <iostream>
 #include <vector>
 using namespace std;
+
+
+//------------------------------------------------------------------------------------------------------//
+//                                          BIG INT                                                     //
+//------------------------------------------------------------------------------------------------------//
 
 class BigInt
 {
@@ -11,60 +16,57 @@ private:
     string digits;
 public:
 
-    //Constructors:
+    // Constructors 
     BigInt(unsigned long long n = 0);
     BigInt(string&);
     BigInt(const char*);
     BigInt(BigInt&);
 
-    //Helper Functions:
-    friend void divide_by_2(BigInt& a);
-    friend bool Null(const BigInt&);
-    friend int Length(const BigInt&);
-    int operator[](const int)const;
-
-    //Direct assignment
+    friend void divide_by_2(BigInt& a);     // Chia đôi
+    friend bool Null(const BigInt&);        // Kiểm tra = 0
+    friend int Size(const BigInt&);       // Trả về độ dài
+    int operator[](const int)const;         // truy cập theo a[index]
+     
     BigInt& operator=(const BigInt&);
 
-    //Post/Pre - Incrementation
-    BigInt& operator++();
-    BigInt operator++(int temp);
-    BigInt& operator--();
-    BigInt operator--(int temp);
+    // Tăng/giảm 1 đơn vị
+    BigInt& operator++();                   // i++
+    BigInt operator++(int temp);            // ++i
+    BigInt& operator--();                   // i--
+    BigInt operator--(int temp);            // --i
 
-    //Addition and Subtraction
+    // Cộng/Trừ số nguyên lớn
     friend BigInt& operator+=(BigInt&, const BigInt&);
     friend BigInt operator+(const BigInt&, const BigInt&);
     friend BigInt operator-(const BigInt&, const BigInt&);
     friend BigInt& operator-=(BigInt&, const BigInt&);
 
-    //Comparison operators
+    // So sánh số nguyên lớn
     friend bool operator==(const BigInt&, const BigInt&);
     friend bool operator!=(const BigInt&, const BigInt&);
-
     friend bool operator>(const BigInt&, const BigInt&);
     friend bool operator>=(const BigInt&, const BigInt&);
     friend bool operator<(const BigInt&, const BigInt&);
     friend bool operator<=(const BigInt&, const BigInt&);
 
-    //Multiplication and Division
+    // Nhân/Chia số nguyên lớn
     friend BigInt& operator*=(BigInt&, const BigInt&);
     friend BigInt operator*(const BigInt&, const BigInt&);
     friend BigInt& operator/=(BigInt&, const BigInt&);
     friend BigInt operator/(const BigInt&, const BigInt&);
 
-    //Modulo
+    // Modulo số nguyên lớn
     friend BigInt operator%(const BigInt&, const BigInt&);
     friend BigInt& operator%=(BigInt&, const BigInt&);
 
-    //Power Function
+    // Hàm luỹ thừa số nguyên lớn
     friend BigInt& operator^=(BigInt&, const BigInt&);
     friend BigInt operator^(BigInt&, const BigInt&);
 
-    //Square Root Function
+    // Căn bậc 2 số nguyên lớn
     friend BigInt sqrt(BigInt& a);
 
-    //Read and Write
+    // Hàm đọc và ghi
     friend ostream& operator<<(ostream&, const BigInt&);
     friend istream& operator>>(istream&, BigInt&);
 
