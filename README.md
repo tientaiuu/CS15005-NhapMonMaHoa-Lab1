@@ -1,1 +1,3 @@
-# CS15005-NhapMonMaHoa-Lab1
+# Ý tưởng:
+- Để tạo ra một kiểu dữ liệu mới gồm các số nguyên lớn: Chuỗi C++ cho phép chúng ta lưu trữ các số dưới dạng ký tự (theo thứ tự ngược lại để tăng hiệu quả) sao cho khi sử dụng chuỗi, chúng ta cũng có thể lưu trữ các số rất lớn.
+- Đối với phép cộng/trừ hai số nguyên lớn: Sử dụng phép toán cơ bản để cộng, nghĩa là cộng hai chữ số tương ứng và nếu có số nhớ nào đó thì cộng vào tổng các chữ số tiếp theo và lặp lại quá trình này cho đến khi cộng/trừ hết tất cả các chữ số.
