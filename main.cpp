@@ -27,35 +27,37 @@ BigInt modular_exponentiation(BigInt base, BigInt exponent, const BigInt &mod)
     return result;
 }
 
-// Hàm chuyển BigInt thành uint64_t nếu toán tử << có sẵn
-uint64_t bigIntToUInt64(const BigInt &bigInt)
+// Hàm chuyển đổi uint64_t thành BigInt bằng cách chuyển đổi thành chuỗi ký tự trước
+BigInt generate_random_bigint(const BigInt &lower, const BigInt &upper)
 {
-    stringstream ss;
-    ss << bigInt;
-    return std::stoull(ss.str());
+    BigInt range = upper - lower + BigInt("1"); // Thêm "1" để bao gồm giá trị upper
+    BigInt randomValue("0");
+
+    random_device rd;
+    mt19937_64 gen(rd());
+    uniform_int_distribution<uint64_t> dis(0, UINT64_MAX);
+
+    // Tạo một chuỗi ngẫu nhiên và sau đó ép về trong khoảng
+    for (int i = 0; i < 4; ++i)
+    { // Tạo các phần 64-bit để ghép thành một số lớn
+        uint64_t part = dis(gen);
+        string partStr = to_string(part);
+        BigInt partBigInt(partStr);                                                // Chuyển thành chuỗi trước khi khởi tạo BigInt
+        randomValue = (randomValue * BigInt("18446744073709551616")) + partBigInt; // Nhân với 2^64 (18446744073709551616)
+    }
+
+    // Điều chỉnh randomValue để nằm trong phạm vi [lower, upper]
+    randomValue = (randomValue % range) + lower;
+    return randomValue;
 }
 
 // Hàm tạo khoá riêng ngẫu nhiên trong phạm vi [2, p-2]
-BigInt generatePrivateKey(const BigInt &p)
+BigInt generate_private_key(const BigInt &p)
 {
-    // Chuyển BigInt thành uint64_t
-    uint64_t pValue = bigIntToUInt64(p);
+    BigInt lowerLimit("2");
+    BigInt upperLimit = p - BigInt("2");
 
-    uint64_t lowerLimit = 2;
-    uint64_t upperLimit = pValue - 2;
-
-    // Tạo bộ sinh số ngẫu nhiên
-    random_device rd;
-    mt19937_64 generator(rd());
-    uniform_int_distribution<uint64_t> dist(lowerLimit, upperLimit);
-
-    // Tạo số ngẫu nhiên
-    uint64_t randomNumber = dist(generator);
-
-    // Chuyển số ngẫu nhiên thành BigInt
-    BigInt privateKey(randomNumber);
-
-    return privateKey;
+    return generate_random_bigint(lowerLimit, upperLimit);
 }
 
 int main()
@@ -71,10 +73,9 @@ int main()
     cout << "Result of (" << base << "^" << exponent << ") % " << mod << " is: " << result << endl;
 
     BigInt p("10000000000000000000000123456789123456789123456789123456789123456789123456789123456789123456789");
+    BigInt privateKey = generate_private_key(p);
 
-    BigInt privateKey = generatePrivateKey(p);
-
-    cout << "Private key generated: " << privateKey << endl;
+    cout << "Private key: " << privateKey << endl;
 
     return 0;
 }
