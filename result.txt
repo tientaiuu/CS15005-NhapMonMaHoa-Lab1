@@ -1,10 +1,10 @@
 				---- Result of Diffie Hellman key exchange - 64 bits ----
 
-	Running Time: 0.464717 seconds
+	Running Time: 1.40451 seconds
 
-	Alice Secret: 10438742155242420563
+	Alice Secret: 2591072913202302463
 
-	Bob Secret: 10438742155242420563
+	Bob Secret: 2591072913202302463
 
 	Alice-Bob Secret equal? 1
 
