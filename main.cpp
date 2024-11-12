@@ -20,7 +20,7 @@ BigInt modular_exponentiation(BigInt base, BigInt exponent, const BigInt& mod)
 		}
 		base = (base * base) % mod;
 
-		divide_by_2(exponent);
+		exponent /=2;
 	}
 	return result;
 }
@@ -183,7 +183,7 @@ int main()
 	srand(time(NULL));
 
 	// 1. Sinh số nguyên tố lớn p và phần tử sinh g
-	int bit_size = 512;
+	int bit_size = 64;
 
 	BigInt p = generate_safe_prime(bit_size);
 	cout << "Safe Prime Number: " << p << endl;

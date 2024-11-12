@@ -17,12 +17,12 @@ BigInt::BigInt(string& s)
     }
 }
 // Khởi tạo BigInt từ một số nguyên không dấu (unsigned long long)
-BigInt::BigInt(unsigned long long nr)
+BigInt::BigInt(unsigned long long n)
 {
     do {
-        digits.push_back((nr % 10));
-        nr /= 10;
-    } while (nr);
+        digits.push_back(n % 10);
+        n /= 10;
+    } while (n);
 }
 // Khởi tạo BigInt từ một chuỗi ký tự (const char*)
 BigInt::BigInt(const char* s)
@@ -35,17 +35,15 @@ BigInt::BigInt(const char* s)
         digits.push_back(s[i] - '0');
     }
 }
-
 // Copy constructor
-BigInt::BigInt(BigInt& a)
+BigInt::BigInt(const BigInt& other)
 {
-    digits = a.digits;
+    digits = other.digits;
 }
 
 //------------------------------------------------------------------------------------------------------//
 //                                   Cài đặt hàm phụ trợ                                                //
 //------------------------------------------------------------------------------------------------------//
-// Trả về chuỗi Big
 
 // Kiểm tra BigInt = 0 
 bool Null(const BigInt& a)
@@ -61,7 +59,6 @@ int Size(const BigInt& a)
     return a.digits.size();
 }
 
-
 // Cho phép truy cập một chữ số trong BigInt như a[index].
 int BigInt::operator[](const int index)const
 {
@@ -69,7 +66,6 @@ int BigInt::operator[](const int index)const
         throw("ERROR");
     return digits[index];
 }
-
 
 
 //------------------------------------------------------------------------------------------------------//
@@ -83,7 +79,7 @@ bool operator==(const BigInt& a, const BigInt& b)
 }
 bool operator!=(const BigInt& a, const BigInt& b)
 {
-    return !(a.digits == b.digits);
+    return !(a == b);
 }
 
 //------------------- So sánh lớn/bé -------------------------//
@@ -111,9 +107,9 @@ bool operator<=(const BigInt& a, const BigInt& b)
 }
 
 //---------------------- Phép gán ------------------------//
-BigInt& BigInt::operator=(const BigInt& a)
+BigInt& BigInt::operator=(const BigInt& other)
 {
-    this->digits = a.digits;
+    digits = other.digits;
     return *this;
 }
 
@@ -123,7 +119,6 @@ BigInt& BigInt::operator=(const BigInt& a)
 //------------------------------------------------------------------------------------------------------//
 
 //----------------------- Tăng thêm 1 -----------------------//
-// 
 BigInt& BigInt::operator++() 
 {
     int i, n = digits.size();
@@ -136,19 +131,11 @@ BigInt& BigInt::operator++()
     return *this;
 }
 
-BigInt BigInt::operator++(int temp)
-{
-    BigInt aux;
-    aux = *this;
-    ++(*this);
-    return aux;
-}
-
 //----------------------- Giảm đi 1 -----------------------//
 BigInt& BigInt::operator--()
 {
     if (digits[0] == 0 && digits.size() == 1)
-        throw("UNDERFLOW");
+        throw("ERROR: A < 0");
     int i, n = digits.size();
     for (i = 0; digits[i] == 0 && i < n; i++)
         digits[i] = 9;
@@ -157,13 +144,7 @@ BigInt& BigInt::operator--()
         digits.pop_back();
     return *this;
 }
-BigInt BigInt::operator--(int temp)
-{
-    BigInt aux;
-    aux = *this;
-    --(*this);
-    return aux;
-}
+
 
 //----------------------------------- Cộng 2 số nguyên lớn ------------------------------- //
 BigInt& operator+=(BigInt& a, const BigInt& b)
@@ -198,7 +179,7 @@ BigInt operator+(const BigInt& a, const BigInt& b)
 BigInt& operator-=(BigInt& a, const BigInt& b)
 {
     if (a < b)
-        throw("UNDERFLOW");
+        throw("ERROR: A < B");
     int n = Size(a), m = Size(b);
     int i, t = 0, s;
     for (i = 0; i < n; i++)
@@ -272,7 +253,7 @@ BigInt operator*(const BigInt& a, const BigInt& b)
 BigInt& operator/=(BigInt& a, const BigInt& b)
 {
     if (Null(b))
-        throw("Arithmetic Error: Division By 0");
+        throw("Error: Division By 0");
     if (a < b) {
         a = BigInt();
         return a;
@@ -318,7 +299,7 @@ BigInt operator/(const BigInt& a, const BigInt& b)
 BigInt& operator%=(BigInt& a, const BigInt& b)
 {
     if (Null(b))
-        throw("Arithmetic Error: Division By 0");
+        throw("Error: Division By 0");
     if (a < b)
     {
         return a;
@@ -369,7 +350,7 @@ BigInt& operator^=(BigInt& a, const BigInt& b)
         if (Exponent[0] & 1)
             a *= Base;
         Base *= Base;
-        divide_by_2(Exponent);
+        Exponent /= 2;
     }
     return a;
 }
@@ -379,50 +360,6 @@ BigInt operator^(BigInt& a, BigInt& b)
     temp ^= b;
     return temp;
 }
-
-
-//------------------------------------------------------------------------------------------------------//
-//                                       Cài đặt hàm Sqrt cho BigINT                                    //
-//------------------------------------------------------------------------------------------------------//
-
-// Hàm chia đôi 
-void divide_by_2(BigInt& a)
-{
-    int add = 0;
-    for (int i = a.digits.size() - 1; i >= 0; i--)
-    {
-        int digit = (a.digits[i] >> 1) + add;
-        add = ((a.digits[i] & 1) * 5);
-        a.digits[i] = digit;
-    }
-    while (a.digits.size() > 1 && !a.digits.back())
-        a.digits.pop_back();
-}
-
-// Hàm căn bậc 2 cho BigInt
-BigInt sqrt(BigInt& a)
-{
-    BigInt left(1), right(a), v(1), mid, prod;
-    divide_by_2(right);
-    while (left <= right) {
-        mid += left;
-        mid += right;
-        divide_by_2(mid);
-        prod = (mid * mid);
-        if (prod <= a) {
-            v = mid;
-            ++mid;
-            left = mid;
-        }
-        else {
-            --mid;
-            right = mid;
-        }
-        mid = BigInt();
-    }
-    return v;
-}
-
 
 //------------------------------------------------------------------------------------------------------//
 //                                   Cài đặt toán tử đọc/xuất BigInt                                    //
@@ -441,13 +378,14 @@ istream& operator>>(istream& in, BigInt& a)
     }
     return in;
 }
+
 // Xuất ra BigInt 
 ostream& operator<<(ostream& out, const BigInt& a) {
     for (int i = a.digits.size() - 1; i >= 0; i--)
-        out << (short)a.digits[i];
+        cout << (short)a.digits[i];
     return cout;
 }
- 
+
 //------------------------------------------------------------------------------------------------------//
 //                                   So sánh số nguyên tố lớn với số nguyên tố thường                   //
 //------------------------------------------------------------------------------------------------------//
