@@ -120,24 +120,24 @@ BigInt generate_safe_prime(int bit_size)
 	while (true)
 	{
 		//start time
-		auto start = chrono::high_resolution_clock::now();
+		// auto start = chrono::high_resolution_clock::now();
 		prime = randomize_odds_only(bit_size);  		
-		cout << "[" << ++count << "]  -  " << prime << "\n\n";
+		// cout << "[" << ++count << "]  -  " << prime << "\n\n";
 
 		if (is_prime(prime))
 		{
-			cout << "Prime!!!: " << prime << "\n\n";
+			// cout << "Prime!!!: " << prime << "\n\n";
 			BigInt temp = (prime - 1) / 2;
 			if (is_prime(temp))
 			{
-				cout << prime << "\n\n";
+				// cout << prime << "\n\n";
 				return prime;
 			}
 		}
 	//end time
-	auto end = chrono::high_resolution_clock::now();
-		chrono::duration<double> elapsed = end - start;
-		cout << "Time: " << elapsed.count() << " seconds\n\n";
+	// auto end = chrono::high_resolution_clock::now();
+	// 	chrono::duration<double> elapsed = end - start;
+	// 	cout << "Time: " << elapsed.count() << " seconds\n\n";
 	}
 }
 
@@ -177,25 +177,24 @@ BigInt generate_private_key(const BigInt& p)
 // D. Hoàn thành trao đổi khóa Diffie-Hellman
 int main()
 {
+	cout<<"Generating Safe Prime Number..."<<"\n\n";
 	ios_base::sync_with_stdio(false);  // Tắt đồng bộ hóa với stdio
-
-
 	auto start = chrono::high_resolution_clock::now(); // Start high-precision clock
-
 	srand(time(NULL));
+
 	// 1. Sinh số nguyên tố lớn p và phần tử sinh g
-	int bit_size = 64;
+	int bit_size = 512;
 
 	BigInt p = generate_safe_prime(bit_size);
-	cout << "p: " << p << endl;
+	cout << "Safe Prime Number: " << p << endl;
 	BigInt g = 2;
 
 	// 2. Sinh khóa riêng của Alice và Bob
 	BigInt a = generate_private_key(p);
 	BigInt b = generate_private_key(p);
-	cout << "a b right here!!!\n\n";
-	cout << a << "\n\n"
-		<< b << "\n\n";
+	// cout << "a b right here!!!\n\n";
+	// cout << a << "\n\n"
+	// 	<< b << "\n\n";
 
 	// 3. Tính giá trị công khai của Alice và Bob
 	BigInt A = modular_exponentiation(g, a, p);
@@ -208,7 +207,7 @@ int main()
 	// 5. Hiển thị kết quả
 	cout << "Alice Secret: " << alice_shared_secret << "\n\n";
 	cout << "Bob Secret: " << bob_shared_secret << "\n\n";
-	cout << "Alice-Bob Secret equal? " << (alice_shared_secret == bob_shared_secret) << "\n";
+	cout << "Alice-Bob Secret equal? " << (alice_shared_secret == bob_shared_secret) << "\n\n";
 
 	auto end = chrono::high_resolution_clock::now();
 
@@ -217,6 +216,7 @@ int main()
 
 	file <<"\t\t\t\t---- Result of Diffie Hellman key exchange - "<<bit_size<<" bits ----\n\n"
 		<<"\tRunning Time: "<<elapsed.count()<<" seconds\n\n"
+		<<"\tSafe Prime Number: "<<to_String(p) <<"\n\n"
 		<< "\tAlice Secret: " << to_String(alice_shared_secret) << "\n\n"
 		<< "\tBob Secret: " << to_String(bob_shared_secret) << "\n\n"
 		<< "\tAlice-Bob Secret equal? " << (alice_shared_secret == bob_shared_secret) << "\n\n";
