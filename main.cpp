@@ -4,7 +4,6 @@
 #include <fstream>
 #include <chrono>
 
-
 // A: Triển khai hàm luỹ thừa module
 // Hàm cần thực hiện: (base^exponent) % mod
 BigInt modular_exponentiation(BigInt base, BigInt exponent, const BigInt& mod)
@@ -185,7 +184,7 @@ int main()
 
 	srand(time(NULL));
 	// 1. Sinh số nguyên tố lớn p và phần tử sinh g
-	int bit_size = 512;
+	int bit_size = 64;
 
 	BigInt p = generate_safe_prime(bit_size);
 	cout << "p: " << p << endl;
@@ -214,15 +213,13 @@ int main()
 	auto end = chrono::high_resolution_clock::now();
 
 	chrono::duration<double> elapsed = end - start;
-	fstream file("result.txt", ios::out);
+    ofstream file("result.txt");
 
-	file << "---- Result of Diffie Hellman key exchange ----\n\n"
-		<< "Running Time: " << elapsed.count() << " seconds\n\n"
-		<< "Result:\n\n";
-
-	file << "Alice Secret: " << alice_shared_secret << "\n\n"
-		<< "Bob Secret: " << bob_shared_secret << "\n\n"
-		<< "Alice-Bob Secret equal? " << (alice_shared_secret == bob_shared_secret) << "\n";
+	file <<"\t\t\t\t---- Result of Diffie Hellman key exchange - "<<bit_size<<" bits ----\n\n"
+		<<"\tRunning Time: "<<elapsed.count()<<" seconds\n\n"
+		<< "\tAlice Secret: " << to_String(alice_shared_secret) << "\n\n"
+		<< "\tBob Secret: " << to_String(bob_shared_secret) << "\n\n"
+		<< "\tAlice-Bob Secret equal? " << (alice_shared_secret == bob_shared_secret) << "\n\n";
 
 	file.close();
 	return 0;
