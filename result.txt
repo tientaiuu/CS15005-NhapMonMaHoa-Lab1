@@ -1,4 +1,4 @@
-				---- Result of Diffie Hellman key exchange - 64 bits ----
+				---- Result of Diffie Hellman key exchange - 512 bits ----
 
 	Running Time: 19218.2 seconds
 
